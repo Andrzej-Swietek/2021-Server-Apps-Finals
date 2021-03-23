@@ -1,0 +1,94 @@
+// COLORS
+$bg: rgb(1,1,1);
+$text-color: rgb(1,1,1);
+$vs-code-bg: rgb(33, 33, 33) !global;
+$dark-blue-mac: rgba(25,30,50,1);
+$prefered-blue: rgb(91, 192, 222);
+$facebook: rgb(49,125,225);
+$instagram: rgb(213,73,93);
+
+$gray-professional: rgba(62,77,87,1) !global;
+$vs-code-bg: rgba(33,33,33,1) !global;
+$iterm-bg: rgba(40,50,56,1) !global;
+$dark-blue-mac: rgba(25,30,50,1) !global;
+$purple-blue-grad: linear-gradient(135deg,#f403d1,#64b5f6) !global;
+$yellow-purpleish-grad: linear-gradient(135deg,#ffec61,#f321d7) !global;
+$green-blue-grad: linear-gradient(135deg,#24ff72,#2196f3) !global;
+
+// SHADOWS
+$shadow-normal: 0px 0px 10px rgba(0, 0, 0, 0.56);
+
+
+@function darkmode($color){
+  @if (prefers-color-scheme: dark) {
+    @return darken($color, 30%);
+  }
+  @else {
+    @return $color;
+  }
+}
+
+@function easeOutSine-gradient($color: #000, $opacity: 1) {
+  $easeOutSine: (
+    // alpha: stop
+          1: 0%,
+          0.917: 5.3%,
+          0.834: 10.6%,
+          0.753: 15.9%,
+          0.672: 21.3%,
+          0.591: 26.8%,
+          0.511: 32.5%,
+          0.433: 38.4%,
+          0.357: 44.5%,
+          0.283: 50.9%,
+          0.213: 57.7%,
+          0.147: 65%,
+          0.089: 72.9%,
+          0.042: 81.4%,
+          0.011: 90.6%,
+          0: 100%
+  );
+  @if type-of($color) != color {
+    @return null;
+  }
+  $rgba: "#{red($color)},#{green($color)},#{blue($color)}";
+  $color-stops: ();
+  @each $key, $value in $easeOutSine {
+    $color-stops: append($color-stops, unquote("rgba(#{$rgba}, #{$key * $opacity}) #{$value}"), "comma");
+  }
+  @return $color-stops;
+}
+@function scrim-gradient($color: #000, $opacity: 1) {
+  $scrim: (
+    // alpha: stop
+          1: 0%,
+          0.738: 19%,
+          0.541: 34%,
+          0.382: 47%,
+          0.278: 56.5%,
+          0.194: 65%,
+          0.126: 73%,
+          0.075: 80.2%,
+          0.042: 86.1%,
+          0.021: 91%,
+          0.008: 95.2%,
+          0.002: 98.2%,
+          0: 100%
+  );
+  @if type-of($color) != color {
+    @return null;
+  }
+  $rgba: "#{red($color)},#{green($color)},#{blue($color)}";
+  $color-stops: ();
+  @each $key, $value in $scrim {
+    $color-stops: append($color-stops, unquote("rgba(#{$rgba}, #{$key * $opacity}) #{$value}"), "comma");
+  }
+  @return $color-stops;
+}
+
+@mixin grad-to-bottom($color){
+  background-image: linear-gradient(to bottom, easeOutSine-gradient($color, 0.5));
+}
+@mixin grad-scrim($color){
+  background-image: linear-gradient(to bottom, scrim-gradient($color, 0.5));
+}
