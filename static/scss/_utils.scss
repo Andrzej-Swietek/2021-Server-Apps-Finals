@@ -1,0 +1,54 @@
+
+.flex {
+  &-center {
+    // Center Every Thing
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  &-center-inline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  &-around-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  &-item-center {
+    align-self: center;
+  }
+  &-start {
+    // Center Every Thing
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+}
+
+.d {
+  &-none {
+    display: none;
+  }
+  &-none-mobile {
+    //@include breakpoint(all-up-2-big-tab){
+    //  display: none;
+    //}
+
+  }
+  &-block {
+    display: block;
+  }
+  &-flex {
+    display: flex;
+  }
+}
