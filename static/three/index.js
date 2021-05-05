@@ -1,4 +1,3 @@
-
 function init() {
     //div
     const container = document.getElementById('root');
