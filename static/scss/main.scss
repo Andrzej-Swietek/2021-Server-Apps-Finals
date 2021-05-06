@@ -11,7 +11,7 @@ $shadow3: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 $txtColor: azure;
 $settingsBg: #545353;
 
-
+$messageColor: $settingsBg;
 
 @mixin df ($dir,$wrap,$x: center,$y: center){
   display: flex;
@@ -36,6 +36,8 @@ body {
 }
 #chat-container {
   @include df(column,wrap);
+  align-items: center;
+  justify-content: flex-start;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -45,6 +47,7 @@ body {
   z-index: 1100000;
   border-radius: 45px 0 0 45px;
   overflow: hidden;
+  border: 3px  $messageColor solid;
 
   #messages {
     width: 100%;
@@ -52,32 +55,43 @@ body {
     max-height: 22vh;
     padding: 1rem;
     overflow-y: scroll;
-    border: 3px mediumspringgreen solid;
+
     z-index: 1100001;
     border-radius: 45px 0 0 0;
 
     .message-item {
       color: $txtColor;
-      background-color: mediumspringgreen;
-      padding: 1rem 2rem;
+      background-color: $messageColor;
+      box-shadow: $shadow;
+      //padding: 1rem 2rem;
       border-radius: 40px;
       margin: 0 0 1rem 0 ;
+      h2{
+        padding: 1rem 2rem 1rem 2rem;
+        width: 100%;
+      }
+      h5 {
+        background-color: darken($messageColor, 20%);
+        width: 100%;
+        padding: .7rem 2rem .7rem 2rem;
+        border-radius: 0 0 0 45px;
+      }
     }
   }
   #input {
     z-index: 1100002;
     align-self: flex-end;
     width: 100%;
-    position: relative; bottom: 0;
+    position: absolute; bottom: 0;
     font-size: 15px;
     height: 5vh;
     background: none;
     color: black;
     outline: none;
-    border-top:  none;
-    border-bottom:  3px solid mediumspringgreen;
-    border-left:  3px solid mediumspringgreen;
-    border-right:  3px solid mediumspringgreen;
+    border-top: 3px solid $messageColor;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
     border-radius: 0 0 0 45px;
     padding:  0 2rem;
     font-weight: 800;
