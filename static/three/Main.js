@@ -19,8 +19,8 @@ class Main {
         this.stone2.moveTo(5,0,5)
 
 
-        this.sceneBg = new SceneBg(this.scene);
-        this.sceneBg.moveTo(0,0,0)
+        this.skybox = new Skybox(this.scene);
+        this.skybox.moveTo(0,0,0)
 
         this.gridHelper = new THREE.GridHelper(10, 10);
         this.scene.add(this.gridHelper);
@@ -35,6 +35,14 @@ class Main {
         this.controls.minDistance = 10;
         this.controls.maxDistance = 50;
 
+
+        // this.ws = new WebsocketHandler('localhost:3000');
+        const socket = new io();
+        socket.on('message', message=>{
+            console.log(message)
+        });
+        // Przykladdowa wlana wiadomosc
+        socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
     }
 
     render() {

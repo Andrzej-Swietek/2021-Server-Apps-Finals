@@ -1,10 +1,13 @@
 const http  = require('http');
-const express = require("express");
 const path = require("path");
+const express = require("express");
+const socketio = require("socket.io");
 
 const hbs = require('express-handlebars');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketio(server)
 const PORT = process.env.PORT || 3000;
 
 
@@ -45,6 +48,32 @@ app.get('/', (req, res) => {
     res.render('index.hbs',context);
 });
 
-app.listen(PORT, ()=> {
-    console.log('Server listening on  ' + PORT);
+// SOCKET IO
+io.on('connection', socket =>{
+    console.log("New WS Connection Established");
+    socket.emit('message','Welcome to Wuri the game'); // only connecting user
+    socket.broadcast.emit('message','User has joined the game'); // all but connecting user
+    // io.emit() // all the clients
+
+    socket.on('disconnect', ()=>{
+        io.emit('message','User Disconnected')
+    });
+
+    // LISTEN FOR PLAYER MOVE
+    socket.on('playerMover', (message) => {
+        console.log(message)
+        // emit to all
+        io.emit('message', message)
+    })
+
+    socket.on('chatMessage', (message) => {
+        console.log("%c Chat message: "+message, 'color: orange')
+        // emit to all
+        io.emit('chatMessage', message)
+    })
 });
+
+// app.listen(PORT, ()=> {
+//     console.log('Server listening on  ' + PORT);
+// });
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

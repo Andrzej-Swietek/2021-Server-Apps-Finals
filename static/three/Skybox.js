@@ -1,8 +1,8 @@
-class SceneBg{
-
+class Skybox {
+    materialArray = []
     constructor(scene) {
 
-        let materialArray = []
+
         let txUp = new THREE.TextureLoader().load('materials/skybox2-1.jpeg');
         let txFront = new THREE.TextureLoader().load('materials/skybox2-2.jpeg');
         let txBottom = new THREE.TextureLoader().load('materials/skybox2-3.jpeg');
@@ -11,18 +11,18 @@ class SceneBg{
         let txRight = new THREE.TextureLoader().load('materials/skybox2-6.jpeg');
 
 
-        materialArray.push( new THREE.MeshBasicMaterial({map: txFront}) );
-        materialArray.push( new THREE.MeshBasicMaterial({map: txBack}) );
+        this.materialArray.push( new THREE.MeshBasicMaterial({map: txFront}) );
+        this.materialArray.push( new THREE.MeshBasicMaterial({map: txBack}) );
 
-        materialArray.push( new THREE.MeshBasicMaterial({map: txUp}) );
-        materialArray.push( new THREE.MeshBasicMaterial({map: txBottom}) );
+        this.materialArray.push( new THREE.MeshBasicMaterial({map: txUp}) );
+        this.materialArray.push( new THREE.MeshBasicMaterial({map: txBottom}) );
 
-        materialArray.push( new THREE.MeshBasicMaterial({map: txLeft}) );
-        materialArray.push( new THREE.MeshBasicMaterial({map: txRight}) );
+        this.materialArray.push( new THREE.MeshBasicMaterial({map: txLeft}) );
+        this.materialArray.push( new THREE.MeshBasicMaterial({map: txRight}) );
 
 
 
-        materialArray.forEach( material =>{
+        this.materialArray.forEach( material =>{
             material.side = THREE.BackSide;
         })
 
@@ -42,7 +42,7 @@ class SceneBg{
             opacity: 0.8,
         });
 
-        this.mesh = new THREE.Mesh(this.geometry,materialArray);
+        this.mesh = new THREE.Mesh(this.geometry,this.materialArray);
         this.scene.add(this.mesh)
         this.mesh.scale.set(100,100,100);
     }
