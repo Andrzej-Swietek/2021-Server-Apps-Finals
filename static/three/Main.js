@@ -38,11 +38,22 @@ class Main {
 
         // this.ws = new WebsocketHandler('localhost:3000');
         const socket = new io();
+
+        //prośba do serwera o numer planszy i gracza
+        socket.emit('getNum');
+
         socket.on('message', message=>{
             console.log(message)
         });
+        //otrzymanie numeru gracza oraz numeru planszy
+        socket.on('playerNum', playerNum=>{
+            console.log('gracz'+playerNum[0],'plansza'+playerNum[1])
+            sessionStorage.setItem('gracz',playerNum[0])
+            sessionStorage.setItem('plansza',playerNum[1])
+        });
+
         // Przykladdowa wlana wiadomosc
-        socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
+        // socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
     }
 
     render() {
