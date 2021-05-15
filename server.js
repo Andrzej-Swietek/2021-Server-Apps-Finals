@@ -11,32 +11,27 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server)
 const PORT = process.env.PORT || 3000;
-var boardNum = 1;
-var playerNum = 0;
+
+
+let boardNum = 1;
+let playerNum = 0;
 
 //adres do bazy danych user + hasło (na atlasie w 'connect' dodać adres ip który może mieć dostęp do bazy danych)
 const mongoUrl = "mongodb+srv://dbUser:zaq1@WSX@cluster0.0hul7.mongodb.net/database1?retryWrites=true&w=majority";
 const client = new mongoClient(mongoUrl);
 
 //klasa holes
-class Holes {
-    constructor(hole1 = 4, hole2 = 4, hole3 = 4, hole4 = 4, hole5 = 4, hole6 = 4, hole7 = 4, hole8 = 4, hole9 = 4, hole10 = 4) {
-        this.hole1 = hole1;
-        this.hole2 = hole2;
-        this.hole3 = hole3;
-        this.hole4 = hole4;
-        this.hole5 = hole5;
-        this.hole6 = hole6;
-        this.hole7 = hole7;
-        this.hole8 = hole8;
-        this.hole9 = hole9;
-        this.hole10 = hole10;
-    }
-  }
+const Holes = require('./modules/Holes.js');
+
  // The database to use
  const dbName = "test";
-             
 const dbOpers = require("./modules/MongoOperations.js")
+
+// CLEAN UP
+// let db = client.db(dbName);
+// let col = db.collection("boards");
+// dbOpers.DeleteAll(col);
+
 
 app.use(express.static('static'));
 
@@ -99,12 +94,12 @@ io.on('connection', socket =>{
                     let db = client.db(dbName);
                     // Use the collection "people"
                     let col = db.collection("boards");
-                    // Construct a document                                                                                                                                                              
+                    // Construct a document
                     let boardDoc = {
                         "board": boardNum,
-                        "holes": new Holes(),                                                                                                                                
+                        "holes": new Holes(),
                         "gracz1": 1,
-                        "gracz2": 2   
+                        "gracz2": 2
                     }
                     // Insert a single document, wait for promise so we can read it back
                     let p = await col.insertOne(boardDoc);
@@ -114,7 +109,7 @@ io.on('connection', socket =>{
                     console.log(myDoc);
                     } catch (err) {
                     console.log(err.stack);
-                }        
+                }
             }
             run().catch(console.dir);
             //wysłanie do gracza jego numeru oraz planszy na której gra (później będzie można się odnieść do bazy przez te numery)

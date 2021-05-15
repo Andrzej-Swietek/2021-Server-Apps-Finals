@@ -1,8 +1,3 @@
-// import { Scene } from 'three';
-// import Renderer from './Renderer';
-// import Camera from './Camera';
-// import Ico from './Ico';
-
 class Main {
     constructor(container) {
         // właściwości klasy
@@ -18,6 +13,27 @@ class Main {
         this.stone2 = new Cube(this.scene);
         this.stone2.moveTo(5,0,5)
 
+        new RaycasterHandler(this.scene,this.camera.threeCamera)
+
+        // LIGHTS
+        // this.keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
+        // this.keyLight.position.set(-100, 0, 100);
+
+        // this.fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
+        // this.fillLight.position.set(100, 0, 100);
+
+        this.backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        this.backLight.position.set(100, 0, -100).normalize();
+
+        this.keyLight = new Light('DIRECTIONAL',new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
+        this.keyLight.setLightPosition(-100,0,100);
+
+        this.fillLight = new Light('DIRECTIONAL',new THREE.Color('hsl(240, 100%, 75%)'),0.75);
+        this.fillLight.setLightPosition(100, 0, 100);
+
+        this.scene.add(this.keyLight.getLight());
+        this.scene.add(this.fillLight.getLight());
+        this.scene.add(this.backLight);
 
         this.skybox = new Skybox(this.scene);
         this.skybox.moveTo(0,0,0)
@@ -54,6 +70,12 @@ class Main {
 
         // Przykladdowa wlana wiadomosc
         // socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
+
+    this.test_model_g = new GLTFModel('models/duck/duck.gltf'); // TODO: docelowo jako jedno pole classy np planszy
+    this.test_model_g.addToScene(this.scene);
+        // this.test_model = new DaeModel('models/sting/sting.dae','models/sting/Textures/Sting_Base_Color.png') // dla odmiaany tez nie dziala
+        // this.test_model.addToScene(this.scene)
+
     }
 
     render() {
