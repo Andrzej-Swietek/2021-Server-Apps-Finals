@@ -71,10 +71,13 @@ class Main {
         // Przykladdowa wlana wiadomosc
         // socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
 
-    this.test_model_g = new GLTFModel('models/duck/duck.gltf'); // TODO: docelowo jako jedno pole classy np planszy
-    this.test_model_g.addToScene(this.scene);
-        // this.test_model = new DaeModel('models/sting/sting.dae','models/sting/Textures/Sting_Base_Color.png') // dla odmiaany tez nie dziala
-        // this.test_model.addToScene(this.scene)
+        this.test_model_g = new GLTFModel('models/duck/duck.gltf'); // TODO: docelowo jako jedno pole classy np planszy
+        this.test_model_g.addToScene(this.scene);
+
+        this.test_model = new DaeModel('models/sting/sting.dae','models/sting/Textures/Sting_Base_Color.png') // dla odmiaany tez nie dziala
+        this.test_model.addToScene(this.scene) // TODO: SKALOWANIE
+        // this.test_model.setModelScale(.1,.1,.1)
+        // this.test_model.rotate(null,1,90)
 
     }
 
