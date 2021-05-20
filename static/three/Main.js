@@ -7,8 +7,8 @@ class Main {
         this.camera = new Camera(this.renderer.threeRenderer);
         this.ico = new Ico(this.scene);
 
-        this.stone1 = new Cube(this.scene);
-        this.stone1.moveTo(-5,0,-5);
+        // this.stone1 = new Cube(this.scene);
+        // this.stone1.moveTo(-5,0,-5);
 
         this.stone2 = new Cube(this.scene);
         this.stone2.moveTo(5,0,5)
@@ -41,7 +41,8 @@ class Main {
         this.gridHelper = new THREE.GridHelper(10, 10);
         this.scene.add(this.gridHelper);
 
-        this.render();
+
+
 
         this.controls = new THREE.OrbitControls(this.camera.threeCamera, this.renderer.domElement);
         this.controls.enableDamping = true;
@@ -79,11 +80,20 @@ class Main {
         // this.test_model.setModelScale(.1,.1,.1)
         // this.test_model.rotate(null,1,90)
 
+        this.rock_model = new Rock('models/rock/rock.dae')
+        this.rock_model.addToScene(this.scene,-6,-3,-5)
+        // this.rock_model.moveTo(-5,0,-5);
+
+        // this.skala2 = new DaeModel('models/skala2/skala2.dae','models/skala2/skala2/material_3.jpg')
+        // this.skala2.addToScene(this.scene)
+
+        // this.fontanna = new DaeModel('models/fontanna/fontanna.dae','models/fontanna/fontanna/Water_Pool_Light.jpg')
+        // this.fontanna.addToScene(this.scene)
+
+        this.render();
     }
 
     render() {
-
-
         // console.log("render leci")
 
         this.renderer.render(this.scene, this.camera.threeCamera);
