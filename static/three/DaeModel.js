@@ -49,7 +49,7 @@ class DaeModel {
 
     setModelScale(x,y,z){
         console.log(this.model)
-        this.model.children[0].scale.set(x,y,z);
+        this.model.scale.set(x,y,z);
     }
     setPosition(x,y,z){
         this.model.position.set(x,y,z);

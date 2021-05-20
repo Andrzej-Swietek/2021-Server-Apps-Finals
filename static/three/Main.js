@@ -107,16 +107,24 @@ class Main {
         // this.test_model.rotate(null,1,90)
 
         this.rock_model = new Rock('models/rock/rock.dae')
-        this.rock_model.addToScene(this.scene,-6,-3,-5)
-        // this.rock_model.moveTo(-5,0,-5);
+        this.rock_model.addToScene(this.scene,-10,-3,-10)
 
-        // this.skala2 = new DaeModel('models/skala2/skala2.dae','models/skala2/skala2/material_3.jpg')
-        // this.skala2.addToScene(this.scene)
 
         this.fontanna = new Fontain()
         await this.fontanna.addToScene(this.scene,0,0,0,-Math.PI/2,0,0);
         this.fontanna.test_log()
+        this.fontanna.setPosition(-8,-1,8)
+        this.fontanna.setModelScale(.2,.2, .05)
 
+        this.skala2 = new DaeModel('models/skala2/skala2.dae','models/skala2/skala2/material_3.jpg')
+        await this.skala2.addToScene(this.scene)
+        this.skala2.setPosition(15,-3,5)
+        this.skala2.rotate(-Math.PI/2, 0,-Math.PI)
+
+        this.board = new Board(this.scene)
+        await this.board.init()
+        this.board.setPosition(1, 0,0,-1);
+        this.board.setPosition(2, 0,0,1);
         this.render();
     }
 
@@ -125,6 +133,7 @@ class Main {
 
         this.renderer.render(this.scene, this.camera.threeCamera);
         this.ico.update() // obrót ico
+        this.rock_model.update()
         requestAnimationFrame(this.render.bind(this));
     }
 }

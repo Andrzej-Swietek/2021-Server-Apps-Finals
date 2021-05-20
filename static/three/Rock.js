@@ -67,4 +67,7 @@ class Rock {
         // })
 
     }
+    update() {
+        this.model.rotation.z += 0.01
+    }
 }
