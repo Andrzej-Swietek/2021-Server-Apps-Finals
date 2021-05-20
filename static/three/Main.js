@@ -72,11 +72,37 @@ class Main {
         // Przykladdowa wlana wiadomosc
         // socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
 
+        // this.test_model_g = new GLTFModel('models/duck/duck.gltf'); // TODO: docelowo jako jedno pole classy np planszy
+        // this.test_model_g.addToScene(this.scene);
+        //
+        // this.test_model = new DaeModel('models/sting/sting.dae','models/sting/Textures/Sting_Base_Color.png') // dla odmiaany tez nie dziala
+        // this.test_model.addToScene(this.scene) // TODO: SKALOWANIE
+        // // this.test_model.setModelScale(.1,.1,.1)
+        // // this.test_model.rotate(null,1,90)
+        //
+        // this.rock_model = new Rock('models/rock/rock.dae')
+        // this.rock_model.addToScene(this.scene,-6,-3,-5)
+        // // this.rock_model.moveTo(-5,0,-5);
+        //
+        // // this.skala2 = new DaeModel('models/skala2/skala2.dae','models/skala2/skala2/material_3.jpg')
+        // // this.skala2.addToScene(this.scene)
+        //
+        // // this.fontanna = new DaeModel('models/fontanna/fontanna.dae','models/fontanna/fontanna/Water_Pool_Light.jpg')
+        // // this.fontanna.addToScene(this.scene)
+        //
+        // this.fontanna = new Fontain()
+        // await this.fontanna.addToScene(this.scene,0,0,0,0,0,0);
+        // this.fontanna.test_log()
+        //
+        // this.render();
+    }
+
+    async objectSetup(){
         this.test_model_g = new GLTFModel('models/duck/duck.gltf'); // TODO: docelowo jako jedno pole classy np planszy
         this.test_model_g.addToScene(this.scene);
 
         this.test_model = new DaeModel('models/sting/sting.dae','models/sting/Textures/Sting_Base_Color.png') // dla odmiaany tez nie dziala
-        this.test_model.addToScene(this.scene) // TODO: SKALOWANIE
+        await this.test_model.addToScene(this.scene) // TODO: SKALOWANIE
         // this.test_model.setModelScale(.1,.1,.1)
         // this.test_model.rotate(null,1,90)
 
@@ -87,8 +113,9 @@ class Main {
         // this.skala2 = new DaeModel('models/skala2/skala2.dae','models/skala2/skala2/material_3.jpg')
         // this.skala2.addToScene(this.scene)
 
-        // this.fontanna = new DaeModel('models/fontanna/fontanna.dae','models/fontanna/fontanna/Water_Pool_Light.jpg')
-        // this.fontanna.addToScene(this.scene)
+        this.fontanna = new Fontain()
+        await this.fontanna.addToScene(this.scene,0,0,0,-Math.PI/2,0,0);
+        this.fontanna.test_log()
 
         this.render();
     }

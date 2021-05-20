@@ -1,44 +1,49 @@
 class DaeModel {
 
     constructor(modelPath,texturePath) {
-        this.model = null;
+        this.model = null
         this.textureLoader = new THREE.TextureLoader();
         this.texture = this.textureLoader.load(texturePath); // np './models/sting/Textures/Sting_Base_Color.png'
         this.modelPath = modelPath;
     }
 
-    addToScene(scene){
-        let model;
+    async addToScene(scene, x=0,y=0,z=0,alfa=0, beta=0,gamma=0){
+        return new Promise( resolve => {
 
-        const loadingManager = new THREE.LoadingManager( () => {
+            const loadingManager = new THREE.LoadingManager( () => {
 
-            this.model.traverse( (child) => {
-                // dla każdego mesha w modelu
-                if (child.isMesh) {
-                    console.log(child)
-                    child.material.map = this.texture;
-                }
-
-
-            })
-
-            scene.add(this.model);
-
-        });
+                this.model.traverse( (child) => {
+                    // dla każdego mesha w modelu
+                    if (child.isMesh) {
+                        // console.log(child)
+                        child.material.map = this.texture;
+                    }
+                })
+                scene.add(this.model);
+            });
 
 
-        const loader = new THREE.ColladaLoader(loadingManager);
-        loader.load(this.modelPath,  (collada) => {
+            const loader = new THREE.ColladaLoader(loadingManager);
+            loader.load(this.modelPath,  (collada) => {
 
-            this.model = collada.scene;
+                this.model = collada.scene;
 
-            console.log(this.model)
-            this.model.castShadow = true
-            this.model.rotation.y = 90;
-            this.model.rotation.z = 90;
-            this.model.position.y = 1;
-            this.model.scale.set(.05,.05,.05);
-        });
+                console.log(this.model)
+                this.model.castShadow = true
+
+                this.model.rotation.x = alfa;
+                this.model.rotation.y = beta;
+                this.model.rotation.z = gamma;
+
+                this.model.position.x = x;
+                this.model.position.y = y;
+                this.model.position.z = z;
+                this.model.scale.set(.05,.05,.05);
+                resolve(this.model);
+            });
+
+        })
+        // let model;
 
     }
 
