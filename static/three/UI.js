@@ -29,7 +29,7 @@ class UI extends HTMLElement{
         this.player1Points = p1;
         this.player2Points = p2;
         this.$('#player-1-points').innerText = `${this.player1Points}`
-        this.$('#player-3-points').innerText = `${this.player2Points}`
+        this.$('#player-2-points').innerText = `${this.player2Points}`
 
     }
     $(element){

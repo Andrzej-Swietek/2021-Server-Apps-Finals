@@ -68,7 +68,7 @@ class Main {
         socket.on('message', message=>{
             console.log(message)
             console.log(message.player1)
-                // this.ui.updatePlayerPoints(message.player1, message.player2)
+            this.ui.updatePlayerPoints(message.player1 || 0, message.player2 || 0)
         });
         //otrzymanie numeru gracza oraz numeru planszy
         socket.on('playerNum', playerNum=>{
@@ -119,13 +119,8 @@ class Main {
         this.board.setPosition(1, 0,0,-1);
         this.board.setPosition(2, 0,0,1);
 
-    // this.test_fontain = new GLTFModel('models/fontanna/fontanna.gltf');
-    // await this.test_fontain.addToScene(this.scene)
-    //     this.test_fontain.model.scale.set(.2,.2,.05)
-    //     this.test_fontain.model.position.set(-8,1,8)
-    //     this.test_fontain.model.rotation.x = -Math.PI/2
 
-        this.game_piece1 = new Stone(this.scene,{name:"stone1", id:1})
+        this.game_piece1 = new Stone(this.scene,{ name:"stone1", id:1 })
 
 
 
