@@ -17,11 +17,6 @@ class Main {
         new RaycasterHandler(this.scene,this.camera.threeCamera)
 
         // LIGHTS
-        // this.keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
-        // this.keyLight.position.set(-100, 0, 100);
-
-        // this.fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
-        // this.fillLight.position.set(100, 0, 100);
 
         this.backLight = new THREE.DirectionalLight(0xffffff, 1.0);
         this.backLight.position.set(100, 0, -100).normalize();
@@ -61,6 +56,10 @@ class Main {
 
 
         // this.ws = new WebsocketHandler('localhost:3000');
+        if (!window.customElements.get('ui-element'))
+            window.customElements.define('ui-element', UI);
+
+        this.ui = new UI();
         const socket = new io();
 
         //prośba do serwera o numer planszy i gracza
@@ -68,6 +67,8 @@ class Main {
 
         socket.on('message', message=>{
             console.log(message)
+            console.log(message.player1)
+                // this.ui.updatePlayerPoints(message.player1, message.player2)
         });
         //otrzymanie numeru gracza oraz numeru planszy
         socket.on('playerNum', playerNum=>{
@@ -93,8 +94,8 @@ class Main {
         await this.duck.addToScene(this.scene);
         this.duck.model.position.set(-6,-1,-6)
 
-        this.test_model = new DaeModel('models/sting/sting.dae','models/sting/Textures/Sting_Base_Color.png') // dla odmiaany tez nie dziala
-        await this.test_model.addToScene(this.scene) // TODO: SKALOWANIE
+        // this.test_model = new DaeModel('models/sting/sting.dae','models/sting/Textures/Sting_Base_Color.png') // dla odmiaany tez nie dziala
+        // await this.test_model.addToScene(this.scene) // TODO: SKALOWANIE
         // this.test_model.setModelScale(.1,.1,.1)
         // this.test_model.rotate(null,1,90)
 
@@ -125,6 +126,8 @@ class Main {
     //     this.test_fontain.model.rotation.x = -Math.PI/2
 
         this.game_piece1 = new Stone(this.scene,{name:"stone1", id:1})
+
+
 
         this.render();
     }
