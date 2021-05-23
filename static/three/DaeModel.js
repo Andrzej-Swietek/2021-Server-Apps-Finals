@@ -16,7 +16,8 @@ class DaeModel {
                     // dla każdego mesha w modelu
                     if (child.isMesh) {
                         // console.log(child)
-                        child.material.map = this.texture;
+
+                        // child.material.map = this.texture;
                     }
                 })
                 scene.add(this.model);

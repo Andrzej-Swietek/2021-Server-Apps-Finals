@@ -34,4 +34,9 @@ class GLTFModel {
     setPosition(x,y,z){
         this.model.position.set(x,y,z);
     }
+
+    setScale(x,y,z){
+        this.model.scale.set(x,y,z);
+    }
+
 }

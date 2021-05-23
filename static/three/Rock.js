@@ -1,6 +1,6 @@
 class Rock {
     constructor(modelPath) {
-        this.texturePath = 'models/rock/skala1/material_1.jpg'
+        // this.texturePath = 'models/rock/skala1/material_1.jpg'
 
         this.texturePath1 = 'models/rock/skala1/material_1.jpg'
         this.texturePath2 = 'models/rock/skala1/material_2.jpg'
@@ -14,7 +14,11 @@ class Rock {
         this.textureLoader = new THREE.TextureLoader();
         this.texture = this.textureLoader.load(this.texturePath);
 
-        // this.textures.push(this.textureLoader.load(this.texturePath1))
+        this.textures.push( new THREE.MeshBasicMaterial( { map: this.textureLoader.load(this.texturePath1) } )  )
+        this.textures.push( new THREE.MeshBasicMaterial( { map: this.textureLoader.load(this.texturePath2) } )  )
+        this.textures.push( new THREE.MeshBasicMaterial( { map: this.textureLoader.load(this.texturePath3) } )  )
+        this.textures.push( new THREE.MeshBasicMaterial( { map: this.textureLoader.load(this.texturePath4) } )  )
+        this.textures.push( new THREE.MeshBasicMaterial( { map: this.textureLoader.load(this.texturePath5) } )  )
         // this.textures.push(this.textureLoader.load(this.texturePath2))
         // this.textures.push(this.textureLoader.load(this.texturePath3))
         // this.textures.push(this.textureLoader.load(this.texturePath4))
@@ -32,7 +36,15 @@ class Rock {
                 // dla każdego mesha w modelu
                 if (child.isMesh) {
                     // console.log(child)
-                    child.material.map = this.texture;
+                    // child.material.map = this.texture;
+                    // child.material = this.textures
+                    // child.material.map = [
+                    //       new THREE.TextureLoader().load(this.texturePath1) ,
+                    //       new THREE.TextureLoader().load(this.texturePath2) ,
+                    //       new THREE.TextureLoader().load(this.texturePath3) ,
+                    //       new THREE.TextureLoader().load(this.texturePath4) ,
+                    //       new THREE.TextureLoader().load(this.texturePath5)
+                    // ]
                 }
             })
             scene.add(this.model);
@@ -52,6 +64,7 @@ class Rock {
             this.model.position.y = -3;
             this.moveTo(x,y,z);
             this.model.scale.set(.05,.05,.05);
+            // this.model.material = this.textures
         });
 
         // this.model = scene.children.find( (obj) => obj.userData.name === 'Rock')
