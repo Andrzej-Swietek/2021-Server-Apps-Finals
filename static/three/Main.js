@@ -120,7 +120,21 @@ class Main {
         this.board.setPosition(2, 0,0,1);
 
 
-        this.game_piece1 = new Stone(this.scene,{ name:"stone1", id:1 })
+        this.stones = [];
+        for (let i=0; i< 12; i++){
+            for (let j = 0; j < 4 ; j++){
+                let game_piece = new Stone(this.scene,{ name:"stone", id: i })
+                game_piece.setPosition(
+                    game_piece.positionToHole( i )[ j%4 ].x,
+                    game_piece.positionToHole( i )[ j%4 ].y,
+                    game_piece.positionToHole( i )[ j%4 ].z
+                )
+                this.stones.push(game_piece);
+            }
+
+        }
+
+        console.log(this.stones)
 
 
 

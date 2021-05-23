@@ -21,16 +21,16 @@ class Stone extends THREE.Mesh{
 
         let n=11
 
-        this.setPosition(this.positionToHole(n)[0].x, this.positionToHole(n)[0].y, this.positionToHole(n)[0].z)
+        this.setPosition(this.positionToHole(n)[1].x, this.positionToHole(n)[1].y, this.positionToHole(n)[1].z)
 
         this.screen.add(this)
     }
 
     positionToHole(n){
-        let boardSide = (n>5)? -1 : 1; // 1 / -1
+        let boardSide = (n<=5)? 1 : -1; // 1 / -1
 
-        let fx1 = (n < 5)? 2*(n-this.radius/2)-5 : -2*(n-this.radius/2)+17;
-        let fx2 = (n < 5)? 2*(n+this.radius/2)-5 : -2*(n+this.radius/2)+17;
+        let fx1 = (n <= 5)? 2*(n-this.radius/2)-5 : -2*(n-this.radius/2)+17;
+        let fx2 = (n <= 5)? 2*(n+this.radius/2)-5 : -2*(n+this.radius/2)+17;
 
             return this.holes = [
                 { x: fx1, y: 0, z: boardSide-this.radius },
