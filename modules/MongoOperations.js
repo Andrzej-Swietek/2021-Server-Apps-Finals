@@ -56,6 +56,16 @@ module.exports = {
             { $set: { pass: "test" } },
             function (err, data) {
                 console.log("update: "+data)
+            }
+            )
+    },
+
+    UpdateHoles: function (collection, board, holes){
+        collection.updateOne(
+            { board: board },
+            { $set: { holes: holes } },
+            function (err, data) {
+                console.log("update: "+data)
             })
     },
 

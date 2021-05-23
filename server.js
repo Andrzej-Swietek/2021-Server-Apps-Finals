@@ -28,6 +28,17 @@ const Holes = require('./modules/Holes.js');
 const dbOpers = require("./modules/MongoOperations.js")
 
 // CLEAN UP
+cleanUp()
+async function cleanUp(){
+    await client.connect();
+    console.log("Connected correctly to server");
+    let db = client.db(dbName);
+    let col = db.collection("boards");
+    dbOpers.SelectAllFromDatabase(col)
+    dbOpers.DeleteAll(col)
+    dbOpers.SelectAllFromDatabase(col)
+}
+
 // let db = client.db(dbName);
 // let col = db.collection("boards");
 // dbOpers.DeleteAll(col);
@@ -89,24 +100,23 @@ io.on('connection', socket =>{
         else{
             async function run() {
                 try {
-                    await client.connect();
-                    console.log("Connected correctly to server");
+
                     let db = client.db(dbName);
-                    // Use the collection "people"
+                    // Use the collection "boards"
                     let col = db.collection("boards");
                     // Construct a document
                     let boardDoc = {
                         "board": boardNum,
                         "holes": new Holes(),
-                        "gracz1": 1,
-                        "gracz2": 2
+                        "gracz1": 0,
+                        "gracz2": 0
                     }
                     // Insert a single document, wait for promise so we can read it back
                     let p = await col.insertOne(boardDoc);
                     // Find one document
                     let myDoc = await col.findOne();
                     // Print to the console
-                    console.log(myDoc);
+                    // console.log(myDoc);
                     } catch (err) {
                     console.log(err.stack);
                 }
@@ -123,10 +133,65 @@ io.on('connection', socket =>{
 
     // LISTEN FOR PLAYER MOVE
     socket.on('playerMover', (message) => {
-        console.log(message)
+
+        //baza
+        let db = client.db(dbName)
+        let col = db.collection("boards")
+
+        //pobranie starych danych
+        dbOpers.SelectAndLimit(col,'board: '+message['board'],(info)=>{
+            console.log('info')
+            // console.log(info)
+
+            let oldData = info[0]['holes']
+            let playerPoints = info[0]['gracz'+message['player']]
+
+            //podmiana danych na nowe
+            let jump = oldData['hole'+message['doc']]
+            oldData['hole'+message['doc']] = 0
+    
+            for(let r=1;r<=jump;r++){
+                let jumpNum = parseInt(message['doc'])+r
+                if(jumpNum>10){
+                    jumpNum -= 10
+                }
+                oldData['hole'+jumpNum] += 1
+    
+                //przekazanie punktów graczowi
+                if(r==jump){
+                    if(oldData['hole'+jumpNum]%2==0){
+                        playerPoints += oldData['hole'+jumpNum];
+                        oldData['hole'+jumpNum] = 0;
+                    }
+                }
+            }
+            // console.log(oldData)
+            // console.log(playerPoints)
+
+            //wysłanie danych do bazy
+            console.log(message)
+            // console.log(message['board'])
+            dbOpers.UpdateHoles(col,parseInt(message['board']),oldData)
+            if(message['player']==1){
+                col.updateOne({ board: parseInt(message['board']) },{ $set: { gracz1: playerPoints } })
+            }
+            else{
+                col.updateOne({ board: parseInt(message['board']) },{ $set: { gracz2: playerPoints } })
+            }
+        })
         // emit to all
-        io.emit('message', message)
+        dbOpers.SelectAndLimit(col,'board: '+message['board'],(info)=>{
+            console.log('poejfeoninfi')
+            io.emit('message', {holes: info[0]['holes'],
+                                player1: info[0]['gracz1'],
+                                player2: info[0]['gracz2']})
+            // console.log({holes: info[0]['holes'],
+            //             player1: info[0]['gracz1'],
+            //             player2: info[0]['gracz2']})
+        })
+        // io.emit('message',message)
     })
+
 
     socket.on('chatMessage', (message) => {
         console.log("%c Chat message: "+message, 'color: orange')

@@ -76,7 +76,14 @@ class Main {
             sessionStorage.setItem('plansza',playerNum[1])
         });
 
-        // Przykladdowa wlana wiadomosc
+        // ruch gracza
+        for(let q=1;q<11;q++){
+            document.getElementById(q).addEventListener('click',function(){
+                socket.emit('playerMover',{'board':sessionStorage['plansza'],'player':sessionStorage['gracz'],'doc':this.id})
+                console.log(this.id)
+            })
+        }
+
         // socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
 
     }
