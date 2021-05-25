@@ -78,7 +78,7 @@ class Main {
         });
 
         // ruch gracza
-        for(let q=1;q<11;q++){
+        for(let q=1;q<13;q++){
             document.getElementById(q).addEventListener('click',function(){
                 socket.emit('playerMover',{'board':sessionStorage['plansza'],'player':sessionStorage['gracz'],'doc':this.id})
                 console.log(this.id)
