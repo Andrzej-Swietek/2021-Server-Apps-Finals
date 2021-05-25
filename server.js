@@ -152,8 +152,8 @@ io.on('connection', socket =>{
     
             for(let r=1;r<=jump;r++){
                 let jumpNum = parseInt(message['doc'])+r
-                if(jumpNum>10){
-                    jumpNum -= 10
+                if(jumpNum>12){
+                    jumpNum -= 12
                 }
                 oldData['hole'+jumpNum] += 1
     

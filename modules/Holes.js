@@ -1,6 +1,6 @@
 //klasa holes
 module.exports = class Holes {
-    constructor(hole1 = 4, hole2 = 4, hole3 = 4, hole4 = 4, hole5 = 4, hole6 = 4, hole7 = 4, hole8 = 4, hole9 = 4, hole10 = 4) {
+    constructor(hole1 = 4, hole2 = 4, hole3 = 4, hole4 = 4, hole5 = 4, hole6 = 4, hole7 = 4, hole8 = 4, hole9 = 4, hole10 = 4, hole11 = 4, hole12 = 4) {
         this.hole1 = hole1;
         this.hole2 = hole2;
         this.hole3 = hole3;
@@ -11,6 +11,8 @@ module.exports = class Holes {
         this.hole8 = hole8;
         this.hole9 = hole9;
         this.hole10 = hole10;
+        this.hole11 = hole11;
+        this.hole12 = hole12;
     }
 }
 
