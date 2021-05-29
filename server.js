@@ -140,56 +140,93 @@ io.on('connection', socket =>{
 
         //pobranie starych danych
         dbOpers.SelectAndLimit(col,'board: '+message['board'],(info)=>{
-            console.log('info')
+            // console.log('info')
             // console.log(info)
 
-            let oldData = info[0]['holes']
-            let playerPoints = info[0]['gracz'+message['player']]
+            updateValues(info,message,col)
+            
+            //updateValues(
+                //pushToDatabase(
+                    //pushData to client(
+                        //checkWin
+                    //)
+                //)
+            //)
+        })
+
+        //zmiana wartości
+
+        function updateValues(info,message,col){
+            let holes = info[0]['holes']
+            let player1Points = info[0]['gracz1']
+            let player2Points = info[0]['gracz2']
 
             //podmiana danych na nowe
-            let jump = oldData['hole'+message['doc']]
-            oldData['hole'+message['doc']] = 0
+            let jump = holes['hole'+message['doc']]
+            holes['hole'+message['doc']] = 0
     
             for(let r=1;r<=jump;r++){
                 let jumpNum = parseInt(message['doc'])+r
                 if(jumpNum>12){
                     jumpNum -= 12
                 }
-                oldData['hole'+jumpNum] += 1
+                holes['hole'+jumpNum] += 1
     
                 //przekazanie punktów graczowi
                 if(r==jump){
-                    if(oldData['hole'+jumpNum]%2==0){
-                        playerPoints += oldData['hole'+jumpNum];
-                        oldData['hole'+jumpNum] = 0;
+                    if(holes['hole'+jumpNum]%2==0){
+                        if(message['player']==1){
+                            player1Points += holes['hole'+jumpNum];
+                        }
+                        else{
+                            player2Points += holes['hole'+jumpNum];
+                        }
+                        holes['hole'+jumpNum] = 0;
                     }
                 }
             }
-            // console.log(oldData)
-            // console.log(playerPoints)
+            //przekazanie zmienionych wartości do bazy danych
+            pushToDatabase(info,message,col,holes,player1Points,player2Points)
+        }
 
-            //wysłanie danych do bazy
+        //przekazanie zmienionych wartości do bazy danych funkcja
+        function pushToDatabase(info,message,col,holes,player1Points,player2Points){
             console.log(message)
-            // console.log(message['board'])
-            dbOpers.UpdateHoles(col,parseInt(message['board']),oldData)
-            if(message['player']==1){
-                col.updateOne({ board: parseInt(message['board']) },{ $set: { gracz1: playerPoints } })
-            }
-            else{
-                col.updateOne({ board: parseInt(message['board']) },{ $set: { gracz2: playerPoints } })
-            }
-        })
+            dbOpers.UpdateHoles(col,parseInt(message['board']),holes)
+
+            col.updateOne({ board: parseInt(message['board']) },{ $set: { gracz1: player1Points } })
+            col.updateOne({ board: parseInt(message['board']) },{ $set: { gracz2: player2Points } })
+
+            pushData(holes,player1Points,player2Points)
+        }
+
         // emit to all
-        dbOpers.SelectAndLimit(col,'board: '+message['board'],(info)=>{
-            console.log('poejfeoninfi')
-            io.emit('message', {holes: info[0]['holes'],
-                                player1: info[0]['gracz1'],
-                                player2: info[0]['gracz2']})
+        function pushData(holes,player1Points,player2Points){        
+            io.emit('message', {holes: holes,
+                                player1: player1Points,
+                                player2: player2Points})
             // console.log({holes: info[0]['holes'],
             //             player1: info[0]['gracz1'],
             //             player2: info[0]['gracz2']})
-        })
-        // io.emit('message',message)
+            checkWin(player1Points,player2Points)
+        }
+
+        // sprawdzenie warónków wygranej
+        function checkWin(gracz1,gracz2){
+            if(gracz1+gracz2 == 48){
+                if(gracz1>gracz2){
+                    console.log('!!!Wygrał gracz 1!!!')
+                }
+                else if(gracz1<gracz2){
+                    console.log('!!!Wygrał gracz 2!!!')
+                }
+                else{
+                    console.log('!!!Remis!!!')
+                }
+            }
+            console.log('checkwin: ' + (gracz1+gracz2))
+        }
+
     })
 
 
