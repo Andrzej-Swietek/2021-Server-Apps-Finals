@@ -80,6 +80,11 @@ let context = {};
 app.get('/', (req, res) => {
     res.render('index.hbs',context);
 });
+app.get('*', (req, res) => {
+    res.send({error: "No routes matched"});
+    res.end();
+})
+
 
 // SOCKET IO
 io.on('connection', socket =>{
@@ -149,14 +154,14 @@ io.on('connection', socket =>{
             //podmiana danych na nowe
             let jump = oldData['hole'+message['doc']]
             oldData['hole'+message['doc']] = 0
-    
+
             for(let r=1;r<=jump;r++){
                 let jumpNum = parseInt(message['doc'])+r
                 if(jumpNum>12){
                     jumpNum -= 12
                 }
                 oldData['hole'+jumpNum] += 1
-    
+
                 //przekazanie punktów graczowi
                 if(r==jump){
                     if(oldData['hole'+jumpNum]%2==0){

@@ -8,11 +8,11 @@ class RaycasterHandler {
             this.mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
             this.raycaster.setFromCamera(this.mouseVector, camera);
 
-            let intersects = this.raycaster.intersectObjects(scene.children);
+            let intersects = this.raycaster.intersectObjects(scene.children, true);
             console.log(intersects.length)
             if (intersects.length > 0) {
                 // zerowy w tablicy czyli najbliższy kamery obiekt to ten, którego potrzebujemy:
-                console.log(intersects[0].object);
+                console.log(intersects[0].object, intersects[0].object.name, intersects.length );
             }
         }
     }
