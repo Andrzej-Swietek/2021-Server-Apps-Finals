@@ -127,7 +127,7 @@ class Main {
                     game_piece.positionToHole( i )[ j%4 ].y,
                     game_piece.positionToHole( i )[ j%4 ].z
                 )
-                game_piece.userData["hole"] = 4;
+                game_piece.userData["hole"] = i;
                 this.stones.push(game_piece);
             }
 
@@ -136,15 +136,56 @@ class Main {
         console.log(this.stones)
 
 
-        this.light_glow = new LightGlow(this.scene,{"hole":1})
-        this.light_glow.setPosition(
-            this.light_glow.positionToHole(1)[0].x,
-            this.light_glow.positionToHole(1)[0].y,
-            this.light_glow.positionToHole(1)[0].z,
-        )
+        // this.light_glow = new LightGlow(this.scene,{"hole":1})
+        // this.light_glow.setPosition(
+        //     this.light_glow.positionToHole(1)[0].x,
+        //     this.light_glow.positionToHole(1)[0].y,
+        //     this.light_glow.positionToHole(1)[0].z,
+        // )
+
+        this.light_glows = [];
+        this.addLightGlows(1)
+        this.addLightGlows(2)
+        document.addEventListener('keydown', (e)=> {
+            console.log(`Key: s${e.key} | ${e.keyCode} | Shift: ${e.shiftKey}` ) ;
+            switch (e.keyCode) {
+                case 16:
+                    this.deleteGlows();
+            }
+        })
         this.render();
     }
 
+    addLightGlows(player){
+        if (player === 1){
+            for (let i = 0 ; i <  6; i++) {
+                let light_glow_obj = new LightGlow(this.scene,{"hole":i})
+                light_glow_obj.setPosition(
+                    light_glow_obj.positionToHole(i)[0].x,
+                    light_glow_obj.positionToHole(i)[0].y,
+                    light_glow_obj.positionToHole(i)[0].z,
+                )
+                this.light_glows.push(light_glow_obj);
+            }
+        } else {
+            for (let i = 6 ; i <  12; i++) {
+                let light_glow_obj = new LightGlow(this.scene,{"hole":i})
+                light_glow_obj.setPosition(
+                    light_glow_obj.positionToHole(i)[0].x,
+                    light_glow_obj.positionToHole(i)[0].y,
+                    light_glow_obj.positionToHole(i)[0].z,
+                )
+                this.light_glows.push(light_glow_obj);
+            }
+        }
+    }
+
+    deleteGlows(){
+        this.light_glows.forEach( element =>{
+            this.scene.remove( element )
+        })
+        this.light_glows = []
+    }
     render() {
         // console.log("render leci")
 
