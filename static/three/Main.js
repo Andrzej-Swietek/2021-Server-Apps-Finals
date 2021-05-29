@@ -67,7 +67,7 @@ class Main {
 
         socket.on('message', message=>{
             console.log(message)
-            console.log(message.player1)
+            console.log(message.holes)
             this.ui.updatePlayerPoints(message.player1 || 0, message.player2 || 0)
         });
         //otrzymanie numeru gracza oraz numeru planszy

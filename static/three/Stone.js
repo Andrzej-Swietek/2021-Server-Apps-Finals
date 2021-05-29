@@ -34,6 +34,7 @@ class Stone extends THREE.Mesh{
         let fx2 = (n <= 5)? 2*(n+this.radius/2)-5 : -2*(n+this.radius/2)+17;
 
             return this.holes = [
+
                 { x: fx1, y: 0.75, z: boardSide-this.radius },
                 { x: fx1, y: 0.75, z: boardSide+this.radius },
                 { x: fx2, y: 0.75, z: boardSide-this.radius },
