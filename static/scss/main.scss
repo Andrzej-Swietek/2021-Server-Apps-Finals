@@ -154,6 +154,10 @@ ui-element {
   border-radius: 0 0 45px;
   box-shadow: $shadow;
 
+  .me {
+    border: $vue-text-color solid 3px;
+    color: $vue-text-color;
+  }
 
   div {
     width: calc(50% - 2rem);
@@ -166,5 +170,17 @@ ui-element {
       height: 15vh;
       border-radius: 60px 45px 60px 45px;
     }
+  }
+}
+.my-message{
+  //border: #2c3e50 3px solid;
+  justify-self: flex-end;
+  background-color: rgba(#2c3e50, .5) !important;
+  backdrop-filter: blur(25px) !important;
+}
+.other {
+  border-radius:  45px 45px 45px 0  !important;
+  h5 {
+    border-radius:  0  0 45px 0  !important;
   }
 }
