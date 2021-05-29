@@ -237,6 +237,17 @@ io.on('connection', socket =>{
     })
 
 
+    socket.on('nextPlayer',(message)=>{
+        let tura = message
+        if(message['player'] == 1){
+            tura = 2
+        }
+        else{
+            tura = 1
+        }
+        socket.emit('message','tura gracza: '+tura)
+    });
+
     socket.on('chatMessage', (message) => {
         console.log("%c Chat message: "+message, 'color: orange')
         // emit to all

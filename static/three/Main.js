@@ -72,9 +72,11 @@ class Main {
         });
         //otrzymanie numeru gracza oraz numeru planszy
         socket.on('playerNum', playerNum=>{
-            console.log('gracz'+playerNum[0],'plansza'+playerNum[1])
-            sessionStorage.setItem('gracz',playerNum[0])
-            sessionStorage.setItem('plansza',playerNum[1])
+            if(sessionStorage.length==0){
+                console.log('gracz'+playerNum[0],'plansza'+playerNum[1])
+                sessionStorage.setItem('gracz',playerNum[0])
+                sessionStorage.setItem('plansza',playerNum[1])
+            }
         });
 
         // ruch gracza
@@ -84,6 +86,11 @@ class Main {
                 console.log(this.id)
             })
         }
+
+        //zmiana tury
+        document.getElementById('turn').addEventListener('click',function(){
+            socket.emit('nextPlayer',{'player':sessionStorage['gracz']})
+        })
 
         // socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
 
