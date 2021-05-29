@@ -157,52 +157,52 @@ io.on('connection', socket =>{
         //zmiana wartości
 
         function updateValues(info,message,col){
-            let oldData = info[0]['holes']
+            let holes = info[0]['holes']
             let player1Points = info[0]['gracz1']
             let player2Points = info[0]['gracz2']
 
             //podmiana danych na nowe
-            let jump = oldData['hole'+message['doc']]
-            oldData['hole'+message['doc']] = 0
+            let jump = holes['hole'+message['doc']]
+            holes['hole'+message['doc']] = 0
     
             for(let r=1;r<=jump;r++){
                 let jumpNum = parseInt(message['doc'])+r
                 if(jumpNum>12){
                     jumpNum -= 12
                 }
-                oldData['hole'+jumpNum] += 1
+                holes['hole'+jumpNum] += 1
     
                 //przekazanie punktów graczowi
                 if(r==jump){
-                    if(oldData['hole'+jumpNum]%2==0){
+                    if(holes['hole'+jumpNum]%2==0){
                         if(message['player']==1){
-                            player1Points += oldData['hole'+jumpNum];
+                            player1Points += holes['hole'+jumpNum];
                         }
                         else{
-                            player2Points += oldData['hole'+jumpNum];
+                            player2Points += holes['hole'+jumpNum];
                         }
-                        oldData['hole'+jumpNum] = 0;
+                        holes['hole'+jumpNum] = 0;
                     }
                 }
             }
             //przekazanie zmienionych wartości do bazy danych
-            pushToDatabase(info,message,col,oldData,player1Points,player2Points)
+            pushToDatabase(info,message,col,holes,player1Points,player2Points)
         }
 
         //przekazanie zmienionych wartości do bazy danych funkcja
-        function pushToDatabase(info,message,col,oldData,player1Points,player2Points){
+        function pushToDatabase(info,message,col,holes,player1Points,player2Points){
             console.log(message)
-            dbOpers.UpdateHoles(col,parseInt(message['board']),oldData)
+            dbOpers.UpdateHoles(col,parseInt(message['board']),holes)
 
             col.updateOne({ board: parseInt(message['board']) },{ $set: { gracz1: player1Points } })
             col.updateOne({ board: parseInt(message['board']) },{ $set: { gracz2: player2Points } })
 
-            pushData(oldData,player1Points,player2Points)
+            pushData(holes,player1Points,player2Points)
         }
 
         // emit to all
-        function pushData(oldData,player1Points,player2Points){        
-            io.emit('message', {holes: oldData,
+        function pushData(holes,player1Points,player2Points){        
+            io.emit('message', {holes: holes,
                                 player1: player1Points,
                                 player2: player2Points})
             // console.log({holes: info[0]['holes'],
