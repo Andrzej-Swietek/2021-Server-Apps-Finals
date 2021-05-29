@@ -137,7 +137,12 @@ class Main {
         console.log(this.stones)
 
 
-
+        this.light_glow = new LightGlow(this.scene,{"hole":1})
+        this.light_glow.setPosition(
+            this.light_glow.positionToHole(1)[0].x,
+            this.light_glow.positionToHole(1)[0].y,
+            this.light_glow.positionToHole(1)[0].z,
+        )
         this.render();
     }
 
