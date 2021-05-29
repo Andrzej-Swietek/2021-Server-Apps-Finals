@@ -9,15 +9,23 @@ class UI extends HTMLElement{
         let player2 = document.createElement('div');
 
         player1.innerHTML = `
-        <img src="https://image.ceneostatic.pl/data/products/81572858/i-avatar-the-last-airbender-awatar-legenda-aanga-box-13dvd.jpg"  alt="avatar"/>
+<!--        <img src="https://image.ceneostatic.pl/data/products/81572858/i-avatar-the-last-airbender-awatar-legenda-aanga-box-13dvd.jpg"  alt="avatar"/>-->
+        <img src="/img/p1.png"  alt="avatar"/>
         <h1> Player 1 </h1>
         <h2 id="player-1-points">${this.player1Points}</h2>
         `
         player2.innerHTML = `
-        <img src="https://image.ceneostatic.pl/data/products/81572858/i-avatar-the-last-airbender-awatar-legenda-aanga-box-13dvd.jpg"  alt="avatar"/>
+<!--        <img src="https://image.ceneostatic.pl/data/products/81572858/i-avatar-the-last-airbender-awatar-legenda-aanga-box-13dvd.jpg"  alt="avatar"/>-->
+        <img src="/img/p2.png"  alt="avatar"/>
         <h1> Player 2 </h1>
         <h2 id="player-2-points">${this.player2Points}</h2>
         `
+
+        this.whoAmI = sessionStorage.getItem("gracz");
+        if (this.whoAmI  == 1)
+            player1.classList.add('me');
+        else
+            player2.classList.add('me');
 
         this.append(player1)
         this.append(player2)

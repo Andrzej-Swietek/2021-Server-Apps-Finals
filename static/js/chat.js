@@ -12,18 +12,26 @@ window.addEventListener('DOMContentLoaded', ()=>{
     socket.on('chatMessage', (message) => {
         console.log(message);
         // Scroll down
-        let author = 'Andrzej';
+        // let author = 'Andrzej';
+        // let author = "Player " + sessionStorage.getItem("gracz");
+        let author = message.author
         let messDiv = document.createElement('div');
         messDiv.classList.add("message-item");
-        messDiv.innerHTML = `<h2>${message}</h2><h5>${author} | ${new Date().getHours()}:${new Date().getMinutes()}</h5>`;
+        let isItMe = (message.author == ("Player " + sessionStorage.getItem("gracz")))? 'my-message':"other"
+        messDiv.classList.add( isItMe );
+        messDiv.innerHTML = `<h2>${message.text}</h2><h5>${author} | ${new Date().getHours()}:${new Date().getMinutes()}</h5>`;
         chatMessages.append(messDiv)
         chatMessages.scrollTop = chatMessages.scrollHeight;
     });
 
+    input.addEventListener('click', function(e){
+        this.focus();
+    })
     input.addEventListener("keyup", ({key}) => {
         if (key === "Enter" && input.value !== '') {
             // Do work
-            socket.emit('chatMessage', input.value )
+            let author = "Player " + sessionStorage.getItem("gracz");
+            socket.emit('chatMessage', { author: author, text: input.value })
             input.value = ''
         }
     })

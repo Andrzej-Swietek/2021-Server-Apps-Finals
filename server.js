@@ -149,7 +149,7 @@ io.on('connection', socket =>{
             // console.log(info)
 
             updateValues(info,message,col)
-            
+
             //updateValues(
                 //pushToDatabase(
                     //pushData to client(
@@ -170,7 +170,7 @@ io.on('connection', socket =>{
 
             let jump = holes['hole'+message['doc']]
             holes['hole'+message['doc']] = 0
-    
+
             for(let r=1;r<=jump;r++){
                 let jumpNum = parseInt(message['doc'])+r
                 if(jumpNum>12){
@@ -178,7 +178,7 @@ io.on('connection', socket =>{
                 }
 
                 holes['hole'+jumpNum] += 1
-    
+
                 //przekazanie punktów graczowi
                 if(r==jump){
                     if(holes['hole'+jumpNum]%2==0){
@@ -208,7 +208,7 @@ io.on('connection', socket =>{
         }
 
         // emit to all
-        function pushData(holes,player1Points,player2Points){        
+        function pushData(holes,player1Points,player2Points){
             io.emit('message', {holes: holes,
                                 player1: player1Points,
                                 player2: player2Points})
@@ -238,7 +238,7 @@ io.on('connection', socket =>{
 
 
     socket.on('chatMessage', (message) => {
-        console.log("%c Chat message: "+message, 'color: orange')
+        console.log("%c Chat message: "+message.author+" "+message.text , 'color: orange')
         // emit to all
         io.emit('chatMessage', message)
     })

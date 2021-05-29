@@ -70,11 +70,14 @@ class Main {
             console.log(message.holes)
             this.ui.updatePlayerPoints(message.player1 || 0, message.player2 || 0)
         });
+
         //otrzymanie numeru gracza oraz numeru planszy
         socket.on('playerNum', playerNum=>{
-            console.log('gracz'+playerNum[0],'plansza'+playerNum[1])
-            sessionStorage.setItem('gracz',playerNum[0])
-            sessionStorage.setItem('plansza',playerNum[1])
+            if(sessionStorage.length==0){
+                console.log('gracz'+playerNum[0],'plansza'+playerNum[1])
+                sessionStorage.setItem('gracz',playerNum[0])
+                sessionStorage.setItem('plansza',playerNum[1])
+            }
         });
 
         // ruch gracza
@@ -93,11 +96,6 @@ class Main {
         this.duck = new GLTFModel('models/duck/duck.gltf'); // TODO: docelowo jako jedno pole classy np planszy
         await this.duck.addToScene(this.scene);
         this.duck.model.position.set(-6,-1,-6)
-
-        // this.test_model = new DaeModel('models/sting/sting.dae','models/sting/Textures/Sting_Base_Color.png') // dla odmiaany tez nie dziala
-        // await this.test_model.addToScene(this.scene) // TODO: SKALOWANIE
-        // this.test_model.setModelScale(.1,.1,.1)
-        // this.test_model.rotate(null,1,90)
 
         this.rock_model = new Rock('models/rock/rock.dae')
         this.rock_model.addToScene(this.scene,-10,-3,-10)
@@ -129,6 +127,7 @@ class Main {
                     game_piece.positionToHole( i )[ j%4 ].y,
                     game_piece.positionToHole( i )[ j%4 ].z
                 )
+                game_piece.userData["hole"] = 4;
                 this.stones.push(game_piece);
             }
 
