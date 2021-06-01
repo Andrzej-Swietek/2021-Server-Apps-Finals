@@ -29,6 +29,7 @@ class LightGlow extends THREE.Points {
             opacity: .3,
         })
         this.name = "LightGlow";
+        this.userData = userdata;
 
         this.setPosition(0,1,0);
         this.scene.add(this)

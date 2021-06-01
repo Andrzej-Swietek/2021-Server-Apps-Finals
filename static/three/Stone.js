@@ -49,4 +49,13 @@ class Stone extends THREE.Mesh{
     setUserData(data){
         this.userData = data;
     }
+    hoverMaterial(){
+        this.material = new THREE.MeshBasicMaterial({
+            color: 0xFF00FF,
+            side: THREE.DoubleSide,
+            wireframe: false,
+            transparent: true,
+            opacity: 0.5
+        })
+    }
 }

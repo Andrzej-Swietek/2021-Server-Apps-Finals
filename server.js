@@ -99,6 +99,7 @@ io.on('connection', socket =>{
         if(playerNum % 2 == 0){
             //wysłanie do gracza jego numeru oraz planszy na której gra (później będzie można się odnieść do bazy przez te numery)
             io.emit('playerNum',[playerNum,boardNum])
+            io.emit('yourTurn',1)
             playerNum = 0;
             boardNum += 1;
         }
@@ -135,6 +136,10 @@ io.on('connection', socket =>{
     socket.on('disconnect', ()=>{
         io.emit('message','User Disconnected')
     });
+
+    // socket.on('enemyMove',(information)=>{
+        
+    // })
 
     // LISTEN FOR PLAYER MOVE
     socket.on('playerMover', (message) => {
@@ -233,9 +238,20 @@ io.on('connection', socket =>{
             }
             console.log('checkwin: ' + (gracz1+gracz2))
         }
-
+        io.emit('enemyMoveSend',message)
     })
 
+
+    socket.on('nextPlayer',(message)=>{
+        let tura = message
+        if(message['player'] == 1){
+            tura = 2
+        }
+        else{
+            tura = 1
+        }
+        io.emit('yourTurn',tura)
+    });
 
     socket.on('chatMessage', (message) => {
         console.log("%c Chat message: "+message.author+" "+message.text , 'color: orange')

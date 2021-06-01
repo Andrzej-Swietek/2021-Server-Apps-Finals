@@ -5,16 +5,13 @@ class Main {
         this.scene = new THREE.Scene();
         this.renderer = new Renderer(this.scene, container);
         this.camera = new Camera(this.renderer.threeRenderer);
-        // this.ico = new Ico(this.scene);
-        // this.ico.mesh.scale.set(4,4,4)
-        // this.ico.mesh.position.set(15,-3,8);
-        // this.stone1 = new Cube(this.scene);
         // this.stone1.moveTo(-5,0,-5);
 
         this.stone2 = new Cube(this.scene);
         this.stone2.moveTo(5,0,5)
 
-        new RaycasterHandler(this.scene,this.camera.threeCamera)
+        const socket = new io();
+        new RaycasterHandler(this.scene,this.camera.threeCamera, socket)
 
         // LIGHTS
 
@@ -60,7 +57,6 @@ class Main {
             window.customElements.define('ui-element', UI);
 
         this.ui = new UI();
-        const socket = new io();
 
         //prośba do serwera o numer planszy i gracza
         socket.emit('getNum');
@@ -80,16 +76,41 @@ class Main {
             }
         });
 
+        socket.on('enemyMoveSend', message => {
+            if(message['board'] == sessionStorage['plansza']){
+                if(message['player'] == sessionStorage['gracz']){
+                    this.deleteGlows()
+                    // TODO: kropki tur
+                }
+            }
+            if(message['board'] == sessionStorage['plansza']){
+                if(message['player'] != sessionStorage['gracz']){
+                    console.log('ruch przeciwnika')
+                    // TODO: kropki tur
+                }
+            }
+        })
+
         // ruch gracza
-        for(let q=1;q<13;q++){
-            document.getElementById(q).addEventListener('click',function(){
-                socket.emit('playerMover',{'board':sessionStorage['plansza'],'player':sessionStorage['gracz'],'doc':this.id})
-                console.log(this.id)
-            })
-        }
+        // for(let q=1;q<13;q++){
+        //     document.getElementById(q).addEventListener('click',function(){
+        //         socket.emit('playerMover',{'board':sessionStorage['plansza'],'player':sessionStorage['gracz'],'doc':this.id})
+        //         console.log(this.id)
+        //     })
+        // }
+
+        //zmiana tury
+        document.getElementById('turn').addEventListener('click',function(){
+            socket.emit('nextPlayer',{'player':sessionStorage['gracz']})
+        })
 
         // socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
 
+        socket.on('yourTurn',message=>{
+            if(message == sessionStorage['gracz']){
+                this.addLightGlows(message)
+            }
+        })
     }
 
     async objectSetup(){
@@ -121,7 +142,7 @@ class Main {
         this.stones = [];
         for (let i=0; i< 12; i++){
             for (let j = 0; j < 4 ; j++){
-                let game_piece = new Stone(this.scene,{ name:"stone", id: i })
+                let game_piece = new Stone(this.scene,{ name:"stone", id: (j*4)+i })
                 game_piece.setPosition(
                     game_piece.positionToHole( i )[ j%4 ].x,
                     game_piece.positionToHole( i )[ j%4 ].y,
@@ -135,7 +156,6 @@ class Main {
 
         console.log(this.stones)
 
-
         // this.light_glow = new LightGlow(this.scene,{"hole":1})
         // this.light_glow.setPosition(
         //     this.light_glow.positionToHole(1)[0].x,
@@ -144,8 +164,11 @@ class Main {
         // )
 
         this.light_glows = [];
-        this.addLightGlows(1)
-        this.addLightGlows(2)
+        // if(sessionStorage['gracz'] == 1){
+        //     this.addLightGlows(1)
+        // }
+        // this.addLightGlows(1)
+        // this.addLightGlows(2)
         document.addEventListener('keydown', (e)=> {
             console.log(`Key: s${e.key} | ${e.keyCode} | Shift: ${e.shiftKey}` ) ;
             switch (e.keyCode) {
@@ -186,9 +209,38 @@ class Main {
         })
         this.light_glows = []
     }
+
+    // moveStones(hole){
+    //     // let jumpNum = 1;
+    //     let jumpingElems = []
+    //     this.stones.forEach(element => {
+    //         if(element.userData.hole == hole){
+    //             jumpingElems.push(element)         
+    //         }
+    //         // console.log(element.name)
+    //     });
+
+    //     console.log(jumpingElems)
+    //     while(jumpingElems.length>0){
+    //         jumpingElems.forEach(element => {
+    //             setTimeout(jumpPlusZ(element),15);
+    //         })
+    //         jumpingElems.pop();
+    //     }
+
+
+    //     // for(let p=0;p<jumpingElems.length;p+=1){
+    //         // jumpingElems.forEach(element => {
+    //         //     setTimeout(jumpPlusZ(element),15);
+    //         // });
+    //     //     jumpingElems.pop()
+    //     // }
+
+
+    // }
+
     render() {
         // console.log("render leci")
-
         this.renderer.render(this.scene, this.camera.threeCamera);
         // this.ico.update() // obrót ico
         this.rock_model.update()
