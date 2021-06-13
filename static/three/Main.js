@@ -91,6 +91,12 @@ class Main {
             }
         })
 
+        socket.on('endgame', message=>{
+            console.log(`%c  WINNER ${ message.winner }`);
+            // let fireworks = new Fireworks()
+            sessionStorage.clear();
+        })
+
         // ruch gracza
         // for(let q=1;q<13;q++){
         //     document.getElementById(q).addEventListener('click',function(){
@@ -215,7 +221,7 @@ class Main {
     //     let jumpingElems = []
     //     this.stones.forEach(element => {
     //         if(element.userData.hole == hole){
-    //             jumpingElems.push(element)         
+    //             jumpingElems.push(element)
     //         }
     //         // console.log(element.name)
     //     });

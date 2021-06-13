@@ -1,0 +1,11 @@
+<div class="endgameContainer">
+    <h1>Congratulations !!! <span>{{ winner }}</span> won !!!</h1>
+    <button> Download list of moves </button>
+    <button id="again"> Play Again </button>
+</div>
+
+<script>
+    document.querySelector('#again').addEventListener('click', () =>{
+        sessionStorage.clear();
+    });
+</script>

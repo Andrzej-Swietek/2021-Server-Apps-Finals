@@ -31,11 +31,11 @@ class RaycasterHandler {
             if (intersects[0].object.name == 'LightGlow'){
                 moveStones(intersects[0].object.userData.hole);
                 this.socket.emit('playerMover',{'board':sessionStorage['plansza'],'player':sessionStorage['gracz'],'doc':intersects[0].object.userData.hole})
-                
+
                 this.socket.emit('nextPlayer',{'player':sessionStorage['gracz']})
 
                 // this.socket.emit('enemyMove',{'board':sessionStorage['plansza'],'player':sessionStorage['gracz'],'doc':intersects[0].object.userData.hole})
-                
+
                 // if(intersects[0].object.userData.hole == 11){
                 //     moveStones(11)
                 // }
@@ -64,7 +64,7 @@ class RaycasterHandler {
             scene.children.forEach(element => {
                 if(element.name == 'stone'){
                     if(element.userData.hole == hole){
-                        jumpingElems.push(element)         
+                        jumpingElems.push(element)
                     }
                 }
                 // console.log(element.name)
@@ -82,7 +82,7 @@ class RaycasterHandler {
                         scene.children.forEach(element => {
                             if(element.name == 'stone'){
                                 if(element.userData.hole == newHole){
-                                    ballsInHole+=1        
+                                    ballsInHole+=1
                                 }
                             }
                             // console.log(element.name)
@@ -114,7 +114,7 @@ class RaycasterHandler {
                     scene.children.forEach(element => {
                         if(element.name == 'stone'){
                             if(element.userData.hole == newHole){
-                                ballsInHole+=1        
+                                ballsInHole+=1
                             }
                         }
                     });

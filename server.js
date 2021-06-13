@@ -80,6 +80,11 @@ let context = {};
 app.get('/', (req, res) => {
     res.render('index.hbs',context);
 });
+
+app.get('/win', (req, res) => {
+    res.render('win.hbs', {winner: "Player 1"});
+});
+
 app.get('*', (req, res) => {
     res.send({error: "No routes matched"});
     res.end();
@@ -138,7 +143,7 @@ io.on('connection', socket =>{
     });
 
     // socket.on('enemyMove',(information)=>{
-        
+
     // })
 
     // LISTEN FOR PLAYER MOVE
@@ -173,11 +178,11 @@ io.on('connection', socket =>{
 
             //podmiana danych na nowe
 
-            let jump = holes['hole'+message['doc']]
-            holes['hole'+message['doc']] = 0
+            let jump = holes['hole'+(message['doc']+1)]
+            holes['hole'+(message['doc']+1)] = 0
 
             for(let r=1;r<=jump;r++){
-                let jumpNum = parseInt(message['doc'])+r
+                let jumpNum = parseInt(message['doc']+1)+r
                 if(jumpNum>12){
                     jumpNum -= 12
                 }
@@ -228,12 +233,15 @@ io.on('connection', socket =>{
             if(gracz1+gracz2 == 48){
                 if(gracz1>gracz2){
                     console.log('!!!Wygrał gracz 1!!!')
+                    io.emit('endgame',{ winner: 1 })
                 }
                 else if(gracz1<gracz2){
                     console.log('!!!Wygrał gracz 2!!!')
+                    io.emit('endgame',{ winner: 2 })
                 }
                 else{
                     console.log('!!!Remis!!!')
+                    io.emit('endgame',{ winner: 3 })
                 }
             }
             console.log('checkwin: ' + (gracz1+gracz2))
