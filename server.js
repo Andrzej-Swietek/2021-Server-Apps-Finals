@@ -228,7 +228,7 @@ io.on('connection', socket =>{
             checkWin(player1Points,player2Points)
         }
 
-        // sprawdzenie warónków wygranej
+        // sprawdzenie warunków wygranej
         function checkWin(gracz1,gracz2){
             if(gracz1+gracz2 == 48){
                 if(gracz1>gracz2){
