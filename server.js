@@ -173,11 +173,11 @@ io.on('connection', socket =>{
 
             //podmiana danych na nowe
 
-            let jump = holes['hole'+message['doc']]
-            holes['hole'+message['doc']] = 0
+            let jump = holes['hole'+(message['doc']+1)]
+            holes['hole'+(message['doc']+1)] = 0
 
             for(let r=1;r<=jump;r++){
-                let jumpNum = parseInt(message['doc'])+r
+                let jumpNum = parseInt(message['doc']+1)+r
                 if(jumpNum>12){
                     jumpNum -= 12
                 }
@@ -223,7 +223,7 @@ io.on('connection', socket =>{
             checkWin(player1Points,player2Points)
         }
 
-        // sprawdzenie warónków wygranej
+        // sprawdzenie warunków wygranej
         function checkWin(gracz1,gracz2){
             if(gracz1+gracz2 == 48){
                 if(gracz1>gracz2){
