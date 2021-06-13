@@ -271,60 +271,48 @@ ui-element div img {
   z-index: 1400001;
   background-color: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(25px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row column;
   margin: 0;
   font-family: "Source Sans Pro", sans-serif;
-  min-height: 100vh;
-  display: grid;
-  place-content: center;
-  text-align: center;
 }
-#htmlLoaderSpinner h1 {
-  font-size: clamp(1rem, 3vw, 4rem);
+#htmlLoaderSpinner .loader {
   position: relative;
-  font-family: "Source Code Pro", monospace;
-  position: relative;
-  width: max-content;
 }
-#htmlLoaderSpinner h1::before,
-#htmlLoaderSpinner h1::after {
+#htmlLoaderSpinner .loader h1 {
+  position: relative;
+  font-size: 4rem;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  animation: typing 8s steps(10) infinite;
+  overflow: hidden;
+}
+#htmlLoaderSpinner .loader::before {
   content: "";
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
-  left: 0;
+  width: 2px;
+  height: 100%;
+  background: #000;
+  animation: blinkCursor 0.8s steps(3) infinite;
 }
-#htmlLoaderSpinner h1::before {
-  background: var(--bg-color);
-  animation: typewriter var(--typewriterSpeed) steps(var(--typewriterCharacters)) 1s forwards;
-}
-#htmlLoaderSpinner h1::after {
-  width: 0.125em;
-  background: black;
-  animation: typewriter var(--typewriterSpeed) steps(var(--typewriterCharacters)) 1s forwards, blink 750ms steps(var(--typewriterCharacters)) infinite;
-}
-#htmlLoaderSpinner .subtitle {
-  color: rgba(0, 0, 0, 0.7);
-  font-size: 2rem;
-  font-weight: 400;
-  opacity: 0;
-  transform: translateY(3rem);
-  animation: fadeInUp 2s ease calc(var(--typewriterSpeed) + 2s) forwards;
-}
-@keyframes typewriter {
-  to {
-    left: 100%;
-  }
-}
-@keyframes blink {
-  to {
-    background: transparent;
-  }
-}
-@keyframes fadeInUp {
-  to {
+@keyframes blinkCursor {
+  0%, 75% {
     opacity: 1;
-    transform: translateY(0);
+  }
+  76%, 100% {
+    opacity: 0;
+  }
+}
+@keyframes typing {
+  0%, 90%, 100% {
+    width: 0;
+  }
+  30%, 60% {
+    width: 431px;
   }
 }
 
