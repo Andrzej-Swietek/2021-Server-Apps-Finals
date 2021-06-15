@@ -2,7 +2,7 @@ class LightGlow extends THREE.Points {
     constructor(scene, userdata) {
         super();
         this.scene = scene;
-        this.geometry = new THREE.CylinderGeometry( 1, 0.5, 3, 32 );
+        this.geometry = new THREE.CylinderGeometry( 0.5, 0.5, 3, 32 );
         // this.material = new THREE.MeshBasicMaterial({
         //     wireframe: false,
         //     vertexColors: true,
@@ -13,11 +13,7 @@ class LightGlow extends THREE.Points {
         //     opacity: 1,
         //
         // })
-        // this.material = new THREE.MeshBasicMaterial( {
-        //     color: 0xffff00,
-        //     transparent: true,
-        //     opacity: .3,
-        // } );
+
 
         this.material = new THREE.PointsMaterial({
             color: 0xffff00,

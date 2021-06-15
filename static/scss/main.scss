@@ -354,3 +354,52 @@ ui-element {
   //}
 
 }
+
+
+.game-result-container{
+  position: absolute;
+  background-color: rgba(0,0,0,.3);
+  backdrop-filter: blur(25px);
+  color: #8affff;
+  z-index: 1400002;
+  width: 50%;
+  height: 40vh;
+  box-shadow: $shadow;
+  @include df(column, nowrap);
+
+
+  h1 {
+    font-size: 4rem;
+  }
+
+  h2 {
+    span {
+      margin: 0 1rem;
+      color: tomato;
+      font-weight: 900;
+    }
+  }
+
+  button {
+    padding: 1.5rem 4rem;
+    margin: 2rem 0;
+    background: none;
+    border: #8affff 3px solid;
+    color: #8affff;
+    cursor: pointer;
+    transition: .5s;
+
+    &:hover {
+      background-color: rgba(255,255,255,.3);
+    }
+
+  }
+}
+.bg {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(#fff, .3);
+  z-index: 1400000;
+  backdrop-filter: blur(25px);
+}

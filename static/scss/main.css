@@ -316,4 +316,48 @@ ui-element div img {
   }
 }
 
+.game-result-container {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(25px);
+  color: #8affff;
+  z-index: 1400002;
+  width: 50%;
+  height: 40vh;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.56);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+}
+.game-result-container h1 {
+  font-size: 4rem;
+}
+.game-result-container h2 span {
+  margin: 0 1rem;
+  color: tomato;
+  font-weight: 900;
+}
+.game-result-container button {
+  padding: 1.5rem 4rem;
+  margin: 2rem 0;
+  background: none;
+  border: #8affff 3px solid;
+  color: #8affff;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.game-result-container button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.bg {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 1400000;
+  backdrop-filter: blur(25px);
+}
+
 /*# sourceMappingURL=main.css.map */

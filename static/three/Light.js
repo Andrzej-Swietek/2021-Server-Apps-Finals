@@ -51,7 +51,7 @@ class Light {
         });
         const sphere = new THREE.SphereGeometry( 1, 32, 32 );
         this.mesh = new THREE.Mesh(sphere,lightMaterial)
-        this.container.add(this.mesh);
+        // this.container.add(this.mesh);
     }
 
 

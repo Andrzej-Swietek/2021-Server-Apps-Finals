@@ -58,6 +58,7 @@ class Main {
 
         this.ui = new UI();
 
+
         //prośba do serwera o numer planszy i gracza
         socket.emit('getNum');
 
@@ -94,9 +95,12 @@ class Main {
         socket.on('endgame', message=>{
             console.log(`%c  WINNER ${ message.winner }`);
             // let fireworks = new Fireworks()
+            this.endgamePopup = new EndgamePopup(document.body,`Player ${message.winner}`);
+            this.endgamePopup.init();
             sessionStorage.clear();
         })
-
+        // this.endgamePopup = new EndgamePopup(document.body,`Player ${2}`);
+        // this.endgamePopup.init();
         // ruch gracza
         // for(let q=1;q<13;q++){
         //     document.getElementById(q).addEventListener('click',function(){
@@ -249,7 +253,7 @@ class Main {
         // console.log("render leci")
         this.renderer.render(this.scene, this.camera.threeCamera);
         // this.ico.update() // obrót ico
-        this.rock_model.update()
+        if  (this.rock_model.model ) this.rock_model.update()
         requestAnimationFrame(this.render.bind(this));
     }
 }
