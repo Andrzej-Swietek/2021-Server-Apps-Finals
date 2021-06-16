@@ -184,7 +184,7 @@ class Main {
             console.log(this.ballsPositions)
             this.stones = [];
             for (let i=0; i< 12; i++){
-                for (let j = 0; j < this.ballsPositions['hole'+i] ; j++){
+                for (let j = 0; j < this.ballsPositions['hole'+(i+1)] ; j++){
                     let game_piece = new Stone(this.scene,{ name:"stone", id: (j*4)+i })
                     let height = 0;
                     if(j>=4 && j<8){
