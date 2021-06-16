@@ -75,6 +75,10 @@ class Main {
                 sessionStorage.setItem('gracz',playerNum[0])
                 sessionStorage.setItem('plansza',playerNum[1])
             }
+            else{
+                socket.emit('getPos',{'board':sessionStorage['plansza']});
+                socket.emit('nextPlayer',{'player':sessionStorage['gracz'],'board':sessionStorage['plansza']});
+            }
         });
 
         socket.on('enemyMoveSend', message => {
@@ -111,18 +115,25 @@ class Main {
 
         //zmiana tury
         document.getElementById('turn').addEventListener('click',function(){
-            socket.emit('nextPlayer',{'player':sessionStorage['gracz']})
+            socket.emit('nextPlayer',{'player':sessionStorage['gracz'],'board':sessionStorage['plansza']})
         })
 
         // socket.emit('playerMover', {"hole1": 4, "hole3": 4,"hole4": 4,"hole5": 4,"hole6": 4,"hole7": 4,"hole8": 4,"hole9": 4,"hole10": 4} );
 
         socket.on('yourTurn',message=>{
-            if(message == sessionStorage['gracz']){
-                this.addLightGlows(message)
+            if(message['tura'] == sessionStorage['gracz'] && message['board'] == sessionStorage['plansza']){
+                this.addLightGlows(message['tura'],socket)
             }
+
+        })
+
+        socket.on('ballsPos', message=>{
+            this.ballsPositions = [];
+            this.ballsPositions = message['holes'];
+            console.log('ballsPos');
+            console.log(message['holes']);
         })
     }
-
     async objectSetup(){
         this.duck = new GLTFModel('models/duck/duck.gltf'); // TODO: docelowo jako jedno pole classy np planszy
         await this.duck.addToScene(this.scene);
@@ -149,19 +160,53 @@ class Main {
         this.board.setPosition(2, 0,0,1);
 
 
-        this.stones = [];
-        for (let i=0; i< 12; i++){
-            for (let j = 0; j < 4 ; j++){
-                let game_piece = new Stone(this.scene,{ name:"stone", id: (j*4)+i })
-                game_piece.setPosition(
-                    game_piece.positionToHole( i )[ j%4 ].x,
-                    game_piece.positionToHole( i )[ j%4 ].y,
-                    game_piece.positionToHole( i )[ j%4 ].z
-                )
-                game_piece.userData["hole"] = i;
-                this.stones.push(game_piece);
-            }
+        if(this.ballsPositions == null){
+            this.stones = [];
+            for (let i=0; i< 12; i++){
+                for (let j = 0; j < 4 ; j++){
+                    let game_piece = new Stone(this.scene,{ name:"stone", id: (j*4)+i })
+                    game_piece.setPosition(
+                        game_piece.positionToHole( i )[ j%4 ].x,
+                        game_piece.positionToHole( i )[ j%4 ].y,
+                        game_piece.positionToHole( i )[ j%4 ].z
+                    )
+                    game_piece.userData["hole"] = i;
+                    this.stones.push(game_piece);
+                }
 
+            }
+        }
+        else{
+            //blah blah
+            console.log('nulllllllllllllllllllllllllllllllllllllllllllllll')
+            console.log(this.ballsPositions)
+            this.stones = [];
+            for (let i=0; i< 12; i++){
+                for (let j = 0; j < this.ballsPositions['hole'+i] ; j++){
+                    let game_piece = new Stone(this.scene,{ name:"stone", id: (j*4)+i })
+                    let height = 0;
+                    if(j>=4 && j<8){
+                        height = 0.5
+                    }
+                    else if(j>=8 && j<12){
+                        height = 1
+                    }
+                    else if(j>=12){
+                        height = 1.5
+                    }
+                    else{
+                        height = 0;
+                    };
+                    game_piece.setPosition(
+                        game_piece.positionToHole( i )[ j%4 ].x,
+                        game_piece.positionToHole( i )[ j%4 ].y+height,
+                        game_piece.positionToHole( i )[ j%4 ].z
+                    )
+                    game_piece.userData["hole"] = i;
+                    this.stones.push(game_piece);
+                }
+
+            }
         }
 
         console.log(this.stones)
@@ -189,27 +234,62 @@ class Main {
         this.render();
     }
 
-    addLightGlows(player){
+    addLightGlows(player,socket){
+
+        let kamienie = [];
+        this.scene.children.forEach(element => {
+            if(element.name == 'stone'){
+                kamienie.push(element)
+            }
+            // console.log(element.name)
+        });
+
         if (player === 1){
+            let flag = 0;
             for (let i = 0 ; i <  6; i++) {
-                let light_glow_obj = new LightGlow(this.scene,{"hole":i})
-                light_glow_obj.setPosition(
-                    light_glow_obj.positionToHole(i)[0].x,
-                    light_glow_obj.positionToHole(i)[0].y,
-                    light_glow_obj.positionToHole(i)[0].z,
-                )
-                this.light_glows.push(light_glow_obj);
+                let addGlow = 0;
+                kamienie.forEach(kamien => {
+                    if(kamien.userData.hole == i){
+                        addGlow = 1
+                    };
+                });
+                if(addGlow == 1){
+                    let light_glow_obj = new LightGlow(this.scene,{"hole":i})
+                    light_glow_obj.setPosition(
+                        light_glow_obj.positionToHole(i)[0].x,
+                        light_glow_obj.positionToHole(i)[0].y,
+                        light_glow_obj.positionToHole(i)[0].z,
+                    )
+                    this.light_glows.push(light_glow_obj);
+                    flag = 1;
+                }
             }
+            if(flag == 0){
+                socket.emit('nextPlayer',{'player':sessionStorage['gracz'],'board':sessionStorage['plansza']})
+            };
         } else {
+            let flag = 0;
             for (let i = 6 ; i <  12; i++) {
-                let light_glow_obj = new LightGlow(this.scene,{"hole":i})
-                light_glow_obj.setPosition(
-                    light_glow_obj.positionToHole(i)[0].x,
-                    light_glow_obj.positionToHole(i)[0].y,
-                    light_glow_obj.positionToHole(i)[0].z,
-                )
-                this.light_glows.push(light_glow_obj);
+                let addGlow = 0
+                kamienie.forEach(kamien => {
+                    if(kamien.userData.hole == i){
+                        addGlow = 1
+                    };
+                });
+                if(addGlow == 1){
+                    let light_glow_obj = new LightGlow(this.scene,{"hole":i})
+                    light_glow_obj.setPosition(
+                        light_glow_obj.positionToHole(i)[0].x,
+                        light_glow_obj.positionToHole(i)[0].y,
+                        light_glow_obj.positionToHole(i)[0].z,
+                    )
+                    this.light_glows.push(light_glow_obj);
+                    flag = 1;
+                }
             }
+            if(flag == 0){
+                socket.emit('nextPlayer',{'player':sessionStorage['gracz'],'board':sessionStorage['plansza']})
+            };
         }
     }
 

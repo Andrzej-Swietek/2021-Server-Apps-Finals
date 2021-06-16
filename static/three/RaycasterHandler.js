@@ -32,7 +32,7 @@ class RaycasterHandler {
                 moveStones(intersects[0].object.userData.hole);
                 this.socket.emit('playerMover',{'board':sessionStorage['plansza'],'player':sessionStorage['gracz'],'doc':intersects[0].object.userData.hole})
 
-                this.socket.emit('nextPlayer',{'player':sessionStorage['gracz']})
+                this.socket.emit('nextPlayer',{'player':sessionStorage['gracz'],'board':sessionStorage['plansza']})
 
                 // this.socket.emit('enemyMove',{'board':sessionStorage['plansza'],'player':sessionStorage['gracz'],'doc':intersects[0].object.userData.hole})
 
