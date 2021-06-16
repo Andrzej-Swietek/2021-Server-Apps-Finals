@@ -104,7 +104,7 @@ io.on('connection', socket =>{
         if(playerNum % 2 == 0){
             //wysłanie do gracza jego numeru oraz planszy na której gra (później będzie można się odnieść do bazy przez te numery)
             io.emit('playerNum',[playerNum,boardNum])
-            io.emit('yourTurn',1)
+            io.emit('yourTurn',{'tura':1,'board':boardNum})
             playerNum = 0;
             boardNum += 1;
         }
@@ -141,6 +141,19 @@ io.on('connection', socket =>{
     socket.on('disconnect', ()=>{
         io.emit('message','User Disconnected')
     });
+
+    socket.on('getPos', (message) => {
+        console.log('getPos')
+
+        //baza
+        let db = client.db(dbName)
+        let col = db.collection("boards")
+
+        dbOpers.SelectAndLimit(col,'board: '+message['board'],(info)=>{
+            let holes = info[0]['holes'];
+            socket.emit('ballsPos',{'holes':holes})
+        })
+    })
 
     // socket.on('enemyMove',(information)=>{
 
@@ -222,6 +235,7 @@ io.on('connection', socket =>{
             io.emit('message', {holes: holes,
                                 player1: player1Points,
                                 player2: player2Points})
+            io.emit('ballsPos', {holes: holes})
             // console.log({holes: info[0]['holes'],
             //             player1: info[0]['gracz1'],
             //             player2: info[0]['gracz2']})
@@ -251,15 +265,19 @@ io.on('connection', socket =>{
 
 
     socket.on('nextPlayer',(message)=>{
-        let tura = message
+        console.log('nextPlayer')
+        console.log(message)
+        let tura = message['player']
         if(message['player'] == 1){
             tura = 2
         }
         else{
             tura = 1
         }
-        io.emit('yourTurn',tura)
+        io.emit('yourTurn',{'tura':tura,'board':message['board']})
     });
+
+
 
     socket.on('chatMessage', (message) => {
         console.log("%c Chat message: "+message.author+" "+message.text , 'color: orange')
