@@ -244,6 +244,10 @@ io.on('connection', socket =>{
 
         // sprawdzenie warunków wygranej
         function checkWin(gracz1,gracz2){
+            //baza danych
+            let db = client.db(dbName)
+            let col = db.collection("boards")
+
             if(gracz1+gracz2 == 48){
                 if(gracz1>gracz2){
                     console.log('!!!Wygrał gracz 1!!!')
@@ -257,6 +261,7 @@ io.on('connection', socket =>{
                     console.log('!!!Remis!!!')
                     io.emit('endgame',{ winner: 3 })
                 }
+                dbOpers.DeleteAll(col)
             }
             console.log('checkwin: ' + (gracz1+gracz2))
         }
