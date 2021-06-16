@@ -35,8 +35,8 @@ class Main {
         this.skybox = new Skybox(this.scene);
         this.skybox.moveTo(0,0,0)
 
-        this.gridHelper = new THREE.GridHelper(10, 10);
-        this.scene.add(this.gridHelper);
+        // this.gridHelper = new THREE.GridHelper(10, 10);
+        // this.scene.add(this.gridHelper);
 
 
 

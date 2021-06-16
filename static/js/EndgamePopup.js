@@ -11,7 +11,7 @@ class EndgamePopup {
         button.id = "popup-btn";
 
         h1.innerText = 'Game Over !!! ';
-        h2.innerHTML = `The winner is: <span> ${winner} </span>`;
+        h2.innerHTML = (winner !== 'Player 3')? `The winner is: <span> ${winner} </span>` : ' <span> Draw !!!</span>';
         button.innerText = 'Exit';
 
 
