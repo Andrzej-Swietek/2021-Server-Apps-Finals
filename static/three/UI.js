@@ -5,8 +5,8 @@ class UI extends HTMLElement{
         this.player2Points = 0;
 
         this.classList.add('UI-panel-container');
-        let player1 = document.createElement('div');
-        let player2 = document.createElement('div');
+        let player1 = document.createElement('div'); player1.id = "p1";
+        let player2 = document.createElement('div'); player2.id = "p2";
 
         player1.innerHTML = `
 <!--        <img src="https://image.ceneostatic.pl/data/products/81572858/i-avatar-the-last-airbender-awatar-legenda-aanga-box-13dvd.jpg"  alt="avatar"/>-->
@@ -21,11 +21,12 @@ class UI extends HTMLElement{
         <h2 id="player-2-points">${this.player2Points}</h2>
         `
 
-        this.whoAmI = sessionStorage.getItem("gracz");
-        if (this.whoAmI  == 1)
-            player1.classList.add('me');
-        else
-            player2.classList.add('me');
+        // this.whoAmI = sessionStorage.getItem("gracz");
+        // console.log("======================="+ this.whoAmI)
+        // if (this.whoAmI  === "2")
+        //     player2.classList.add('me');
+        // else
+        //     player1.classList.add('me');
 
         this.append(player1)
         this.append(player2)
@@ -42,6 +43,14 @@ class UI extends HTMLElement{
     }
     $(element){
         return document.querySelector(element)
+    }
+    setFrame(){
+        this.whoAmI = sessionStorage.getItem("gracz");
+        console.log("======================="+ this.whoAmI)
+        if (this.whoAmI  === "2")
+            this.$('#p2').classList.add('me');
+        else
+            this.$('#p1').classList.add('me');
     }
 
 }

@@ -74,6 +74,8 @@ class Main {
                 console.log('gracz'+playerNum[0],'plansza'+playerNum[1])
                 sessionStorage.setItem('gracz',playerNum[0])
                 sessionStorage.setItem('plansza',playerNum[1])
+
+                this.ui.setFrame()
             }
             else{
                 socket.emit('getPos',{'board':sessionStorage['plansza']});
